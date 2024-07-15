@@ -85,6 +85,7 @@ function Manager() {
                     type: "success",
                     message: "Đã giao cho nhân viên",
                   });
+                  setBookings(res.data.bookings);
             }else if(res.data.check==false){
                 if(res.data.msg){
                     notyf.open({

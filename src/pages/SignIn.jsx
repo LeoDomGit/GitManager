@@ -62,7 +62,7 @@ export default function SignInSide() {
                 message: "Password is required",
             });
         } else {
-            axios.post(process.env.REACT_APP_API+'/manager/checkLogin', {
+            axios.post(process.env.REACT_APP_API+'manager/checkLogin', {
                 email: email,
                 password: password,
             }).then((res) => {

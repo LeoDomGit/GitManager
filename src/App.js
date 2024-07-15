@@ -9,9 +9,20 @@ function App() {
     <>
      <BrowserRouter>
         <Routes>
+          {localStorage.getItem('token')&& (
+            <>
+              {localStorage.getItem('role') && localStorage.getItem('role')=='manager' && (
+                      <Route path='/manager' element={<Manager/>}/>
+              )}
+              {localStorage.getItem('role') && localStorage.getItem('role')=='staff' && (
+                      <Route path='/nhan-vien' element={<Staff/>}/>
+                    )}
+            </>
+          )}
+          {!localStorage.getItem('token') && (
           <Route path='/' element={<SignInSide/>}/>
-          <Route path='/manager' element={<Manager/>}/>
-          <Route path='/nhan-vien' element={<Staff/>}/>
+          )}
+
 
 
         </Routes>

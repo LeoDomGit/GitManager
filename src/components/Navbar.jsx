@@ -1,6 +1,10 @@
 import React from 'react'
 
 function Navbar() {
+  const Logout =()=>{
+    localStorage.clear();
+    window.location.replace('/');
+  }
   return (
     <>
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -23,7 +27,17 @@ function Navbar() {
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
         <li className="nav-item">
           <a className="nav-link active" aria-current="page" href="#">
-            Home
+            Trang chủ
+          </a>
+        </li>
+        <li className="nav-item">
+          <a className="nav-link active" aria-current="page" href="/thanh-toan">
+           Thanh toán
+          </a>
+        </li>
+        <li className="nav-item">
+          <a className="nav-link active" aria-current="page" href="#" onClick={(e)=>Logout()}>
+            Đăng xuất
           </a>
         </li>
       </ul>

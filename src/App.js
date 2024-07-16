@@ -3,6 +3,7 @@ import './App.css';
 import SignInSide from './pages/SignIn';
 import Manager from './pages/Manager';
 import Staff from './pages/Staff';
+import CheckOut from './pages/CheckOut';
 
 function App() {
   return (
@@ -12,18 +13,19 @@ function App() {
           {localStorage.getItem('token')&& (
             <>
               {localStorage.getItem('role') && localStorage.getItem('role')=='manager' && (
+                    <>
                       <Route path='/manager' element={<Manager/>}/>
+                      <Route path='/thanh-toan' element={<CheckOut/>}/>
+                    </>
+                      
               )}
               {localStorage.getItem('role') && localStorage.getItem('role')=='staff' && (
                       <Route path='/nhan-vien' element={<Staff/>}/>
                     )}
             </>
           )}
-          {!localStorage.getItem('token') && (
-          <Route path='/' element={<SignInSide/>}/>
-          )}
-
-
+                  <Route path='/' element={<SignInSide/>}/>
+                  <Route path='*' element={<SignInSide/>}/>
 
         </Routes>
      </BrowserRouter>

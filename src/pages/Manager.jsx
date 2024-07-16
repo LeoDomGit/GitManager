@@ -59,11 +59,22 @@ function Manager() {
     }, 1000);
   }, []);
   useEffect(() => {
-    fetch(process.env.REACT_APP_API + "bookings")
-      .then((res) => res.json())
-      .then((res) => {
-        setBookings(res);
-      });
+    fetch(process.env.REACT_APP_API + "bookings",{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then((res) => {
+      if (!res.ok) {
+        localStorage.clear();
+        window.location.replace('/');
+      }
+      return res.json();
+    })
+    .then((res) => {
+      setBookings(res);
+    })
     fetch(process.env.REACT_APP_API+'staff').then(res=>res.json())
     .then((res)=>{
         setStaffs(res);
@@ -116,7 +127,7 @@ function Manager() {
                     <div className="row">
                       <div className="bg-dark col-md-1"></div>
                       <div className="col-md text-center">
-                        {booking.service_name}
+                        <a style={{textDecoration:'none'}} target="_blank" href={"https://frontend.codingfs.com/dich-vu/"+booking.service_slug}>{booking.service_name}</a>
                       </div>
                     </div>
                   </div>

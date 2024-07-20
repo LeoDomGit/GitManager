@@ -11,7 +11,7 @@ import { Col, Form, InputGroup, Row } from "react-bootstrap";
 
 function CheckOut() {
 	const [bookingsCustomers, setBookingsCustomers] = useState([]);
-	const [selectCustomer, setSelectCustomer] = useState([]); // Trạng thái để lưu thông tin khách hàng được chọn
+	const [selectCustomer, setSelectCustomer] = useState([]);
 	const [show, setShow] = useState(false);
 	const [date, setDate] = useState("");
 	const [date1, setDate1] = useState("");

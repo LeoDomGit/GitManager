@@ -262,9 +262,12 @@ function CheckOut() {
 							<Button variant="outlined" color="error" sx={{ width: "20%" }} onClick={handleClose}>
 								Cancel
 							</Button>
-							<Button variant="contained" color="success" sx={{ width: "20%" }} disabled={selectCustomer.length === 0} onClick={() => createBill(selectCustomer[0].id_customer)}>
-								Tạo hóa đơn
-							</Button>
+							{selectCustomer.length >0 && selectCustomer[0].status==2 && (
+							<Button variant="contained" color="success" sx={{ width: "20%" }}  onClick={() => createBill(selectCustomer[0].id_customer)}>
+							Tạo hóa đơn 		
+						</Button>
+							)}
+
 						</Stack>
 					</Typography>
 				</Box>

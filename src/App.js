@@ -4,6 +4,7 @@ import SignInSide from "./pages/SignIn";
 import Manager from "./pages/Manager";
 import Staff from "./pages/Staff";
 import CheckOut from "./pages/CheckOut";
+import Bills from "./pages/Bills";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import { Create } from "@mui/icons-material";
 import CreateBill from "./pages/CreateBill";
@@ -21,6 +22,7 @@ function App() {
                   <Route path="/thanh-toan" element={<CheckOut />} />
                   <Route path="/pagementsuccess" element={<PaymentSuccess />} />
                   <Route path="/tao-bill" element={<CreateBill />} />
+                  <Route path="/bills/:id" element={<Bills />} />
                 </>
               )}
               {localStorage.getItem("role") && localStorage.getItem("role") == "staff" && <Route path="/nhan-vien" element={<Staff />} />}

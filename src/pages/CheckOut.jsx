@@ -3,6 +3,10 @@ import Navbar from "../components/Navbar";
 import "notyf/notyf.min.css";
 import { Notyf } from "notyf";
 import axios from "axios";
+import { Box, Button, IconButton, Modal, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Stack, Grid, TableFooter, TablePagination } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+import { Link } from "react-router-dom";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 function CheckOut() {
 	const [bookingsCustomers, setBookingsCustomers] = useState([]);
@@ -82,7 +86,7 @@ function CheckOut() {
 						type: "success",
 						message: "Tạo hóa đơn thành công",
 					});
-					window.location.reload();
+					window.location.replace("/bills" + id_customer);
 				} else {
 					notyf.open({
 						type: "error",
@@ -95,112 +99,170 @@ function CheckOut() {
 			});
 	};
 
+	const columns = [
+		{ field: "id_booking", headerName: "ID", width: 100 },
+		{ field: "name", headerName: "Tên người đặt", width: 250 },
+		{
+			field: "phone",
+			headerName: "Số điện thoại",
+			width: 250,
+			renderCell: (params) =>
+				params.value ? (
+					<Link className="text-decoration-none" to={`tel:${params.value}`}>
+						{params.value}
+					</Link>
+				) : (
+					<span style={{ color: "red" }}>Không có SĐT</span>
+				),
+		},
+		{
+			field: "email",
+			headerName: "Email",
+			width: 250,
+			renderCell: (params) =>
+				params.value ? (
+					<Link className="text-decoration-none" to={`mailto:${params.value}`}>
+						{params.value}
+					</Link>
+				) : (
+					<span style={{ color: "red" }}>Không có Email</span>
+				),
+		},
+		{ field: "time", headerName: "Thời gian đặt lịch", width: 250 },
+		{
+			field: "status",
+			headerName: "Trạng thái",
+			width: 120,
+			renderCell: (params) => (
+				<IconButton aria-label="info" color="info" onClick={() => handleShow(params.row.id_customer)}>
+					<InfoOutlinedIcon />
+				</IconButton>
+			),
+		},
+	];
+
 	return (
 		<>
 			<Navbar />
+			<Modal open={show} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+				<Box
+					sx={{
+						position: "absolute",
+						top: "50%",
+						left: "50%",
+						transform: "translate(-50%, -50%)",
+						width: 980,
+						height: 550,
+						bgcolor: "background.paper",
+						border: "2px solid #000",
+						boxShadow: 24,
+						p: 4,
+					}}>
+					<Typography id="modal-modal-title" variant="h5" align="center" sx={{ fontWeight: "bold" }} component="h2">
+						Thông tin chi tiết
+					</Typography>
+					<Typography id="modal-modal-description" sx={{ mt: 2 }}>
+						<Paper sx={{ mx: "auto", p: 2 }}>
+							<Stack direction="column" spacing={1}>
+								<Grid container>
+									<Grid item md={6}>
+										<Typography variant="h6" color="ThreeDDarkShadow">
+											Tên khách hàng:
+										</Typography>
+										<Typography variant="h6" color="ThreeDDarkShadow">
+											Địa chỉ email khách hàng:
+										</Typography>
+									</Grid>
+									<Grid item md={6}>
+										<Typography variant="h6" align="right" color="ThreeDDarkShadow">
+											{selectCustomer.length > 0 && selectCustomer[0].name}
+										</Typography>
+										<Typography variant="h6" align="right" color="ThreeDDarkShadow">
+											{selectCustomer.length > 0 && selectCustomer[0].email}
+										</Typography>
+									</Grid>
+								</Grid>
+								<TableContainer component={Paper}>
+									<Table sx={{ minWidth: 650 }} aria-label="simple table">
+										<TableHead>
+											<TableRow>
+												<TableCell>#</TableCell>
+												<TableCell align="right">Loại dịch vụ</TableCell>
+												<TableCell align="right">Thời gian đặt lịch</TableCell>
+												<TableCell align="right">Nhân viên thực hiện</TableCell>
+											</TableRow>
+										</TableHead>
+										<TableBody>
+											{selectCustomer.length > 0 ? (
+												selectCustomer.map((row, index) => (
+													<TableRow key={row.id_booking} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+														<TableCell component="th" scope="row">
+															{index + 1}
+														</TableCell>
+														<TableCell align="right">{row.service_name}</TableCell>
+														<TableCell align="right">{row.time}</TableCell>
+														<TableCell align="right">{row.user_name}</TableCell>
+													</TableRow>
+												))
+											) : (
+												<TableRow>
+													<TableCell align="center" padding="normal" colSpan={5}>
+														Nguời dùng không đặt lịch nào trong hôm nay
+													</TableCell>
+												</TableRow>
+											)}
+										</TableBody>
+										<TableFooter
+											sx={{
+												"& .MuiTableCell-root": {
+													border: "none",
+												},
+												"& .MuiTablePagination-root": {
+													justifyContent: "center",
+												},
+											}}>
+											<TableRow>
+												<TablePagination rowsPerPageOptions={[5, 10, 25]} count={selectCustomer.length} rowsPerPage={[5]} page={[10]} />
+											</TableRow>
+										</TableFooter>
+									</Table>
+								</TableContainer>
+							</Stack>
+						</Paper>
+					</Typography>
+					<Typography sx={{ mt: 2 }}>
+						<Stack direction="row" spacing={2} justifyContent="space-between" gutterBottom>
+							<Button variant="outlined" color="error" sx={{ width: "20%" }} onClick={handleClose}>
+								Cancel
+							</Button>
+							<Button variant="contained" color="success" sx={{ width: "20%" }} disabled={selectCustomer.length === 0} onClick={() => createBill(selectCustomer[0].id_customer)}>
+								Tạo hóa đơn
+							</Button>
+						</Stack>
+					</Typography>
+				</Box>
+			</Modal>
 			<div className="container">
-				<div className="row w-100 mt-2 p-3 bg-primary text-light rounded" style={{ margin: "0px auto" }}>
+				<div className="row w-100 mt-2 p-3 bg-primary text-light rounded m-auto">
 					<h4>Danh sách thanh toán</h4>
 				</div>
-				{bookingsCustomers.length > 0 ? (
-					<table className="table table-bordered table-responsive table-hover mt-3 text-center">
-						<thead className="table-primary">
-							<tr>
-								<th scope="col">ID</th>
-								<th scope="col">Tên</th>
-								<th scope="col">Email</th>
-								<th scope="col">Số điện thoại</th>
-								<th scope="col">Hành động</th>
-							</tr>
-						</thead>
-						<tbody>
-							{bookingsCustomers &&
-								bookingsCustomers.map((bookingCustomer, index) => (
-									<tr key={index}>
-										<th scope="row">{index + 1}</th>
-										<td>{bookingCustomer.name}</td>
-										<td>{bookingCustomer.email}</td>
-										<td>{bookingCustomer.phone ? bookingCustomer.phone : "Chưa điền phone"}</td>
-										<td>
-											<button onClick={() => createBill(bookingCustomer.id_customer)} type="button" className="btn btn-sm btn-primary w-50">
-												Thanh toán
-											</button>
-											<button onClick={() => handleShow(bookingCustomer.id_customer)} type="button" className="btn btn-sm btn-success w-25 ms-3">
-												Chi tiết
-											</button>
-										</td>
-									</tr>
-								))}
-						</tbody>
-					</table>
-				) : (
-					<p>Không có dữ liệu để hiển thị</p>
-				)}
-				{/* Modal */}
-				{show && (
-					<div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
-						<div className="modal-dialog">
-							<div className="modal-content">
-								<div className="modal-header mb-3">
-									<h5 className="modal-title">Chi Tiết Thanh Toán</h5>
-									<button type="button" className="btn-close" onClick={handleClose} aria-label="Close"></button>
-								</div>
-								{selectCustomer.length > 0 ? (
-									<div className="modal-body">
-										<div className="input-group mb-3">
-											<span className="input-group-text" id="basic-addon1">
-												Tên khách
-											</span>
-											<input type="text" className="form-control" placeholder="Tên khách" aria-label="Customer Name" aria-describedby="basic-addon1" value={selectCustomer[0]["name"] || ""} readOnly />
-										</div>
-										<div className="row">
-											<div className="col-12">
-												<h6>Danh sách dịch vụ khách đã làm ( trong hôm nay )</h6>
-											</div>
-											<div className="col">
-												<table className="table table-hover table-responsive table-bordered">
-													<thead>
-														<tr>
-															<th scope="col">#</th>
-															<th scope="col">Dịch vụ</th>
-															<th scope="col">Thời gian</th>
-														</tr>
-													</thead>
-													<tbody>
-														{selectCustomer.map((customer, index) => {
-															return (
-																<tr key={index}>
-																	<th scope="row">{index + 1}</th>
-																	<td>{customer.service_name}</td>
-																	<td>{customer.time}</td>
-																</tr>
-															);
-														})}
-													</tbody>
-												</table>
-											</div>
-										</div>
-									</div>
-								) : (
-									<div className="modal-body">
-										<p className="text-center fs-6 fw-bold">Không có dữ liệu đặt trong hôm nay</p>
-									</div>
-								)}
-
-								<div className="modal-footer">
-									{selectCustomer && (
-										<button type="button" className="btn btn-success" onClick={() => notyf.success("Thanh toán thành công")}>
-											Thanh toán
-										</button>
-									)}
-									<button type="button" className="btn btn-danger" onClick={handleClose}>
-										Đóng
-									</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				)}
+				<Box sx={{ height: 650, width: "100%" }}>
+					<DataGrid
+						rows={bookingsCustomers}
+						columns={columns}
+						getRowId={(row) => row.id_booking}
+						initialState={{
+							pagination: {
+								paginationModel: {
+									pageSize: 10,
+								},
+							},
+						}}
+						pageSizeOptions={[10, 20, 30]}
+						checkboxSelection
+						disableRowSelectionOnClick
+					/>
+				</Box>
 			</div>
 		</>
 	);

@@ -7,11 +7,14 @@ import { Box, Button, IconButton, Modal, Typography, Table, TableBody, TableCell
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { Col, Form, InputGroup, Row } from "react-bootstrap";
 
 function CheckOut() {
 	const [bookingsCustomers, setBookingsCustomers] = useState([]);
 	const [selectCustomer, setSelectCustomer] = useState([]); // Trạng thái để lưu thông tin khách hàng được chọn
 	const [show, setShow] = useState(false);
+	const [date, setDate] = useState("");
+	const [date1, setDate1] = useState("");
 
 	const notyf = new Notyf({
 		duration: 1000,
@@ -97,6 +100,30 @@ function CheckOut() {
 			.catch((error) => {
 				console.error("Fetch error:", error);
 			});
+	};
+
+	const handleDateFilter = () => {
+		const filteredData = bookingsCustomers.filter((item) => {
+			const time = new Date(item.time);
+			const fromTime = date ? new Date(date) : null;
+			const toTime = date1 ? new Date(date1) : null;
+
+			if (fromTime && !toTime) {
+				return time >= fromTime;
+			}
+
+			if (!fromTime && toTime) {
+				return time <= toTime;
+			}
+
+			if (fromTime && toTime) {
+				return time >= fromTime && time <= toTime;
+			}
+
+			return true;
+		});
+
+		setBookingsCustomers(filteredData);
 	};
 
 	const columns = [
@@ -242,9 +269,28 @@ function CheckOut() {
 					</Typography>
 				</Box>
 			</Modal>
+
 			<div className="container">
 				<div className="row w-100 mt-2 p-3 bg-primary text-light rounded m-auto">
 					<h4>Danh sách thanh toán</h4>
+				</div>
+				<div className="d-flex justify-content-between">
+					<Row className="mb-3">
+						<Col>
+							<Form.Group controlId="formBasic2">
+								<Form.Label>
+									<strong>Tìm kiếm theo thời gian:</strong>
+								</Form.Label>
+								<InputGroup>
+									<Form.Control type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+									<Form.Control type="date" value={date1} onChange={(e) => setDate1(e.target.value)} />
+									<Button variant="contained" color="success" onClick={handleDateFilter}>
+										Áp dụng
+									</Button>
+								</InputGroup>
+							</Form.Group>
+						</Col>
+					</Row>
 				</div>
 				<Box sx={{ height: 650, width: "100%" }}>
 					<DataGrid

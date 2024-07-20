@@ -89,7 +89,7 @@ function CheckOut() {
 						type: "success",
 						message: "Tạo hóa đơn thành công",
 					});
-					window.location.replace("/bills" + id_customer);
+					window.location.replace("/bills/" + id_customer);
 				} else {
 					notyf.open({
 						type: "error",

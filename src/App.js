@@ -7,6 +7,7 @@ import CheckOut from "./pages/CheckOut";
 import Bills from "./pages/Bills";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import CreateBill from "./pages/CreateBill";
+import Home from "./pages/Home";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -19,6 +20,7 @@ function App() {
           <>
             {role === "manager" && (
               <>
+                <Route path="/bao-cao" element={<Home />} />
                 <Route path="/manager" element={<Manager />} />
                 <Route path="/thanh-toan" element={<CheckOut />} />
                 <Route path="/payment-success" element={<PaymentSuccess />} />

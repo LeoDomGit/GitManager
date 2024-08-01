@@ -4,6 +4,7 @@ import SignInSide from './pages/SignIn';
 import Manager from './pages/Manager';
 import Staff from './pages/Staff';
 import CheckOut from './pages/CheckOut';
+import Home from './pages/Home';
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
           {localStorage.getItem('token')&& (
             <>
               {localStorage.getItem('role') && localStorage.getItem('role')=='manager' && (
-                    <>
+                    <> 
                       <Route path='/manager' element={<Manager/>}/>
                       <Route path='/thanh-toan' element={<CheckOut/>}/>
                     </>
@@ -21,12 +22,12 @@ function App() {
               )}
               {localStorage.getItem('role') && localStorage.getItem('role')=='staff' && (
                       <Route path='/nhan-vien' element={<Staff/>}/>
+                      // ,<Route path='/nhan-vien' element={<Home/>}/> BarChar
                     )}
             </>
           )}
                   <Route path='/' element={<SignInSide/>}/>
                   <Route path='*' element={<SignInSide/>}/>
-
         </Routes>
      </BrowserRouter>
     </>

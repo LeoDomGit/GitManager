@@ -1,26 +1,90 @@
-import React from 'react';
-import { VictoryPie } from 'victory';
-import { ResponsiveContainer, BarChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Bar } from 'recharts';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
+import { Chart } from "react-google-charts";
 import './DashboardPage.css';
 
-const data = [
-  { name: 'Tháng 1', donhang: 110500, doanhthu: 105000 },
-  { name: 'Tháng 2', donhang: 500000, doanhthu: 120000 },
-  { name: 'Tháng 3', donhang: 300000, doanhthu: 140000 },
-  { name: 'Tháng 4', donhang: 80000, doanhthu: 130000 },
-  { name: 'Tháng 5', donhang: 550000, doanhthu: 150000 },
-  { name: 'Tháng 6', donhang: 450000, doanhthu: 110000 },
-  { name: 'Tháng 7', donhang: 45000, doanhthu: 125000 },
-  { name: 'Tháng 9', donhang: 100000, doanhthu: 145000 },
-  { name: 'Tháng 10', donhang: 450000, doanhthu: 155000 },
-  { name: 'Tháng 11', donhang: 480000, doanhthu: 165000 },
-  { name: 'Tháng 12', donhang: 123300, doanhthu: 175000 }
-];
-
-const totalRevenue = data.reduce((acc, cur) => acc + cur.doanhthu, 0);
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28CFE', '#FF667F'];
 
 function Home() {
+  const [data, setData] = useState([]);
+  const [serviceData, setServiceData] = useState([]);
+  const [weeklyRevenueData, setWeeklyRevenueData] = useState([]);
+  const [totalWeeklyRevenue, setTotalWeeklyRevenue] = useState(0);
+
+  useEffect(() => {
+    fetch(process.env.REACT_APP_API + 'revenue/product')
+      .then(response => response.json())
+      .then(data => setData(data))
+      .catch(error => console.error(error));
+  }, []);
+
+  useEffect(() => {
+    fetch(process.env.REACT_APP_API + 'revenue/services')
+      .then(response => response.json())
+      .then(data => setServiceData(data))
+      .catch(error => console.error(error));
+  }, []);
+
+  useEffect(() => {
+    fetch(process.env.REACT_APP_API + 'revenue/services/weekly-monthly?id_customer=2&date1=2024-07-01&date2=2024-08-31')
+      .then(response => response.json())
+      .then(data => {
+        const revenueData = data.reduce((acc, item) => {
+          const week = `Tuần ${item.week} Tháng ${item.month}`;
+          const revenue = item.service_price * item.total_bookings;
+          if (!acc[week]) {
+            acc[week] = { week, revenue };
+          } else {
+            acc[week].revenue += revenue;
+          }
+          return acc;
+        }, {});
+        setWeeklyRevenueData(Object.values(revenueData));
+        
+        const totalRevenue = Object.values(revenueData).reduce((sum, item) => sum + item.revenue, 0);
+        setTotalWeeklyRevenue(totalRevenue);
+      })
+      .catch(error => console.error(error));
+  }, []);
+
+  const totalRevenue = data.reduce((accumulator, item) => {
+    const revenue = parseFloat(item.total_revenue) || 0;
+    return accumulator + revenue;
+  }, 0);
+
+  const totalServiceRevenue = serviceData.reduce((accumulator, item) => {
+    const revenue = item.service_price * item.total_bookings || 0;
+    return accumulator + revenue;
+  }, 0);
+
+  const productPieData = [
+    ['Sản phẩm', 'Doanh thu'],
+    ...data.map(item => [item.product_name, parseFloat(item.total_revenue)])
+  ];
+
+  const servicePieData = [
+    ['Dịch vụ', 'Doanh thu'],
+    ...serviceData.map(item => [item.service_name, item.service_price * item.total_bookings])
+  ];
+
+  const weeklyBarData = [
+    ['Tuần', 'Doanh thu'],
+    ...weeklyRevenueData.map(item => [item.week, item.revenue])
+  ];
+
+  const pieOptions = {
+    pieHole: 0.4,
+    colors: COLORS
+  };
+
+  const barOptions = {
+    legend: { position: 'none' },
+    colors: ['#82ca9d'],
+    hAxis: { title: 'Tuần' },
+    vAxis: { title: 'Doanh thu (VND)' },
+    chartArea: { width: '70%', height: '70%' },
+  };
+
   return (
     <div className="dashboard-container">
       <Navbar />
@@ -29,43 +93,53 @@ function Home() {
           <h2>Tổng quan</h2>
         </header>
         <div className="metrics-section">
-          <div className="metric-card">
-            <h5>Tổng đơn hàng</h5>
-            <h4>280</h4>
-            <p>Tổng đơn hàng trong 1 năm</p>
+        <div className="metric-card">
+            <h5>Tổng doanh thu hàng tuần</h5>
+            <h4>{totalWeeklyRevenue.toLocaleString()} VND</h4>
+            <p>Doanh thu theo tuần từ 01/07/2024 đến 31/08/2024</p>
           </div>
           <div className="metric-card">
-            <h5>Tổng doanh thu</h5>
+            <h5>Tổng doanh thu sản phẩm</h5>
             <h4>{totalRevenue.toLocaleString()} VND</h4>
-            <p>Tổng doanh thu trong 1 năm</p>
+            <p></p>
           </div>
           <div className="metric-card">
-            <h5>Tổng số người dùng</h5>
-            <h4>560,410</h4>
-            <p>24% so với 7 ngày qua</p>
+            <h5>Tổng doanh thu dịch vụ</h5>
+            <h4>{totalServiceRevenue.toLocaleString()} VND</h4>
+            <p></p>
           </div>
+          
         </div>
         <div className="charts-section">
           <div className="chart-container">
             <h3>Đơn hàng</h3>
-            <div className="container my-5">
-              <div className="row justify-content-center">
-                <div className="col-12 col-md-10 col-lg-8">
-                  <ResponsiveContainer width="100%" height={350}>
-                    <BarChart data={data}>
-                      <XAxis dataKey="name" tickSize={10} tickLine={{ strokeWidth: 2 }} />
-                      <YAxis tickSize={10} tickLine={{ strokeWidth: 2 }} />
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="donhang" fill="#7884d8" barSize={20} />
-                      <Bar dataKey="doanhthu" fill="#82ca9d" barSize={20} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                  
-                </div>
-              </div>
-            </div>
+            <Chart
+              chartType="ColumnChart"
+              data={weeklyBarData}
+              options={barOptions}
+              width="100%"
+              height="400px"
+            />
+          </div>
+          <div className="chart-container">
+            <h3>Tổng doanh thu sản phẩm</h3>
+            <Chart
+              chartType="PieChart"
+              data={productPieData}
+              options={pieOptions}
+              width="100%"
+              height="400px"
+            />
+          </div>
+          <div className="chart-container">
+            <h3>Tổng doanh thu dịch vụ</h3>
+            <Chart
+              chartType="PieChart"
+              data={servicePieData}
+              options={pieOptions}
+              width="100%"
+              height="400px"
+            />
           </div>
         </div>
       </main>

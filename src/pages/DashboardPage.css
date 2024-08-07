@@ -54,4 +54,22 @@ body {
   .chart-container h3 {
     margin-bottom: 20px;
   }
+
+
+  .date-range-selector {
+    display: flex;
+    justify-content: center; 
+    gap: 20px; 
+    margin-left: 520px; 
+  }
+  
+  
+  .date-range-selector label {
+    flex-direction: column;
+  }
+  
+  .date-range-selector input[type="date"] {
+    margin-top: 5px;
+  }
+  
   

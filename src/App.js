@@ -1,3 +1,4 @@
+/*eslint-disable*/ 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import SignInSide from './pages/SignIn';
@@ -17,6 +18,7 @@ function App() {
                     <> 
                       <Route path='/manager' element={<Manager/>}/>
                       <Route path='/thanh-toan' element={<CheckOut/>}/>
+                      <Route path='/bao-cao' element={<Home/>}/>
                     </>
                       
               )}

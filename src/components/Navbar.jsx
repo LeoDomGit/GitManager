@@ -1,3 +1,4 @@
+/*eslint-disable*/ 
 import React from 'react'
 import { Link } from 'react-router-dom';
 function Navbar() {
@@ -30,11 +31,22 @@ function Navbar() {
             Trang chủ
           </a>
         </li>
+       
+        {localStorage.getItem('role') && localStorage.getItem('role')=='manager' && (
+          <>
+           <li className="nav-item">
+           <a className="nav-link active" aria-current="page" href="/thanh-toan">
+            Thanh toán
+           </a>
+         </li>
         <li className="nav-item">
-          <a className="nav-link active" aria-current="page" href="/thanh-toan">
-           Thanh toán
-          </a>
-        </li>
+        <a className="nav-link active" aria-current="page" href="/bao-cao">
+         Báo cáo
+        </a>
+      </li>
+          </>
+        )}
+
         <li className="nav-item">
           <a className="nav-link active" aria-current="page" href="#" onClick={(e)=>Logout()}>
             Đăng xuất

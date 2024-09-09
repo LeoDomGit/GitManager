@@ -23,8 +23,11 @@ function App() {
                       
               )}
               {localStorage.getItem('role') && localStorage.getItem('role')=='staff' && (
+                      <>
                       <Route path='/nhan-vien' element={<Staff/>}/>
-                      ,<Route path='/nhan-vien' element={<Home/>}/>
+                      <Route path='/nhan-vien' element={<Home/>}/>
+                      </>
+
                     )}
             </>
           )}

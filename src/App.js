@@ -6,6 +6,8 @@ import Manager from './pages/Manager';
 import Staff from './pages/Staff';
 import CheckOut from './pages/CheckOut';
 import Home from './pages/Home';
+import Bills from './pages/Bills';
+
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
                     <> 
                       <Route path='/manager' element={<Manager/>}/>
                       <Route path='/thanh-toan' element={<CheckOut/>}/>
+                      <Route path='/bills/:id' element={<Bills/>}/>
                       <Route path='/bao-cao' element={<Home/>}/>
                     </>
                       

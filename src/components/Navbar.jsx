@@ -1,3 +1,4 @@
+/*eslint-disable*/ 
 import React from 'react'
 import { Link } from 'react-router-dom';
 function Navbar() {
@@ -10,7 +11,7 @@ function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
   <div className="container-fluid">
     <a className="navbar-brand" href="#">
-      <img src="https://marketplace.canva.com/EAE85VgPq3E/1/0/1600w/canva-v%E1%BA%BD-tay-h%C3%ACnh-tr%C3%B2n-logo-c3Jw1yOiXJw.jpg" className='rounded-circle' style={{height:'50px'}} alt="" />
+      <img src="https://frontend.codingfs.com/assets/images/codevui_shop.png" className='rounded-circle' style={{height:'50px'}} alt="" />
     </a>
     <button
       className="navbar-toggler"
@@ -30,11 +31,26 @@ function Navbar() {
             Trang chủ
           </a>
         </li>
+        {localStorage.getItem('role') && localStorage.getItem('role')=='manager' && (
+          <>
+           <li className="nav-item">
+           <a className="nav-link active" aria-current="page" href="/thanh-toan">
+            Thanh toán
+           </a>
+         </li>
         <li className="nav-item">
-          <a className="nav-link active" aria-current="page" href="/thanh-toan">
-           Thanh toán
-          </a>
-        </li>
+        <a className="nav-link active" aria-current="page" href="/bao-cao">
+         Báo cáo
+        </a>
+      </li>
+        <li className="nav-item">
+        <a className="nav-link active" aria-current="page" href="/bill">
+         Hóa đơn
+        </a>
+      </li>
+          </>
+        )}
+
         <li className="nav-item">
           <a className="nav-link active" aria-current="page" href="#" onClick={(e)=>Logout()}>
             Đăng xuất

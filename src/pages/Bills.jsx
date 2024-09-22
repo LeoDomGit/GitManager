@@ -26,6 +26,7 @@ import { useParams } from "react-router-dom";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
+
 function Bills() {
 	const { id } = useParams();
 	const [bills, setBills] = useState([]);

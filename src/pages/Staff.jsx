@@ -1,3 +1,5 @@
+/*eslint-disable*/ 
+
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Box from "@mui/material/Box";

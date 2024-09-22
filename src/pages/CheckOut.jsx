@@ -1,3 +1,4 @@
+/*eslint-disable*/ 
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import "notyf/notyf.min.css";
@@ -248,9 +249,6 @@ function CheckOut() {
 													justifyContent: "center",
 												},
 											}}>
-											<TableRow>
-												<TablePagination rowsPerPageOptions={[5, 10, 25]} count={selectCustomer.length} rowsPerPage={[5]} page={[10]} />
-											</TableRow>
 										</TableFooter>
 									</Table>
 								</TableContainer>

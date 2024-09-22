@@ -1,3 +1,4 @@
+/*eslint-disable*/ 
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { Chart } from "react-google-charts";
@@ -195,7 +196,7 @@ function Home() {
   };
 
   return (
-    <div className="dashboard-container">
+    <div style={{fontFamily:'Time new Romance'}} className="dashboard-container">
       <Navbar />
       <main className="main-content">
         <header className="main-header">
@@ -220,28 +221,11 @@ function Home() {
           </div>
           
         </div>
-        <div className="date-range-selector">
-              <label>
-                Ngày bắt đầu:
-                <input
-                  type="date"
-                  name="startDate"
-                  value={dateRange.startDate}
-                  onChange={handleDateChange}
-                />
-              </label>
-              <label>
-                Ngày kết thúc:
-                <input
-                  type="date"
-                  name="endDate"
-                  value={dateRange.endDate}
-                  onChange={handleDateChange}
-                />
-              </label>
-            </div>
-        <div className="charts-section">
-          <div className="chart-container">
+
+        <div className="w-100">
+        <div className="row">
+          <div className="col-md-6">
+          <div className="">
             <h3>Tổng doanh thu sản phẩm</h3>
             <Chart
               chartType="PieChart"
@@ -251,7 +235,9 @@ function Home() {
               height="400px"
             />
           </div>
-          <div className="chart-container">
+          </div>
+          <div className="col-md-6">
+          <div className="">
             <h3>Tổng doanh thu dịch vụ</h3>
             <Chart
               chartType="PieChart"
@@ -261,9 +247,37 @@ function Home() {
               height="400px"
             />
           </div>
-          
-          <div className="chart-container">
+          </div>
+        </div>
+ 
+
+          <div className="row">
+            <div className="col-md">
+            <div className="w-100">
             <h3>Doanh thu hàng ngày sản phẩm</h3>
+            <div className="date-range-selector">
+              <label>
+                Ngày bắt đầu:
+                <input
+                  type="date"
+                  name="startDate"
+                  className='form-control'
+                  value={dateRange.startDate}
+                  onChange={handleDateChange}
+                />
+              </label>
+              <label>
+                Ngày kết thúc:
+                <input
+                  type="date"
+                  name="endDate"
+                  className='form-control'
+
+                  value={dateRange.endDate}
+                  onChange={handleDateChange}
+                />
+              </label>
+            </div>
             <Chart
               chartType="Bar"
               data={dailyRevenueData}
@@ -272,7 +286,9 @@ function Home() {
               height="400px"
             />
           </div>
-          <div className="chart-container">
+            </div>
+<div className="col-md">
+<div className="">
             <h3>Doanh thu hàng ngày dịch vụ</h3>
             <Chart
               chartType="Bar"
@@ -282,6 +298,10 @@ function Home() {
               height="400px"
             />
           </div>
+</div>
+
+          </div>
+         
         </div>
       </main>
     </div>

@@ -10,6 +10,7 @@ import Bills from './pages/Bills';
 import Bill from './pages/Bill'
 
 
+
 function App() {
   return (
     <>
@@ -31,6 +32,7 @@ function App() {
                       <Route path='/nhan-vien' element={<Staff/>}/>
                       <Route path='/nhan-vien' element={<Home/>}/>
                       <Route path='/nhan-vien' element={<Bill/>}/>
+
                       </>
 
                     )}

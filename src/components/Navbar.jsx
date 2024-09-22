@@ -31,6 +31,10 @@ function Navbar() {
             Trang chủ
           </a>
         </li>
+
+
+       
+
         {localStorage.getItem('role') && localStorage.getItem('role')=='manager' && (
           <>
            <li className="nav-item">
@@ -43,11 +47,14 @@ function Navbar() {
          Báo cáo
         </a>
       </li>
+
         <li className="nav-item">
         <a className="nav-link active" aria-current="page" href="/bill">
          Hóa đơn
         </a>
       </li>
+
+
           </>
         )}
 

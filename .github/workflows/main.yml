@@ -1,0 +1,39 @@
+name: 🚀 Deploy on push to main
+
+on: 
+  push:
+    branches:    
+      - main 
+
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v2
+
+    - name: 📝 Set environment variables
+      run: |
+        echo "REACT_APP_API=${{ secrets.REACT_APP_API }}" >> .env
+    - name: 🔧 Install dependencies and build
+      run: |
+        npm install
+        npm run build
+
+    - name: List output files
+      run: find build/ -print
+
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      with:
+          server: ${{ secrets.SERVER }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          local-dir: build/
+          exclude: |
+            **/.git**
+            **/.git*/**
+            **/node_modules/**
+            **/.**

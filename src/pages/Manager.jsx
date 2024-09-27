@@ -57,7 +57,7 @@ function Manager() {
           return () => {
             echo.leaveChannel("bookings");
           };
-    }, 1000);
+    }, 2000);
   }, []);
   useEffect(() => {
     fetch(process.env.REACT_APP_API + "bookings",{

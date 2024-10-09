@@ -201,8 +201,7 @@ function Home() {
       <main className="main-content">
         <header className="main-header">
           <h2>Tổng quan</h2>
-        </header>
-        <div className="metrics-section">
+          <div className="metrics-section-mt">
           <div className="metric-card">
             <h5>Tổng doanh thu sản phẩm</h5>
             <h4>{totalRevenue.toLocaleString()} VND</h4>
@@ -221,34 +220,10 @@ function Home() {
           </div>
           
         </div>
+        </header>
+        
 
-        <div className="w-100">
-        <div className="row">
-          <div className="col-md-6">
-          <div className="">
-            <h3>Tổng doanh thu sản phẩm</h3>
-            <Chart
-              chartType="PieChart"
-              data={productPieData}
-              options={pieOptions}
-              width="100%"
-              height="400px"
-            />
-          </div>
-          </div>
-          <div className="col-md-6">
-          <div className="">
-            <h3>Tổng doanh thu dịch vụ</h3>
-            <Chart
-              chartType="PieChart"
-              data={servicePieData}
-              options={pieOptions}
-              width="100%"
-              height="400px"
-            />
-          </div>
-          </div>
-        </div>
+       
  
 
           <div className="row">
@@ -287,22 +262,50 @@ function Home() {
             />
           </div>
             </div>
-<div className="col-md">
-<div className="">
-            <h3>Doanh thu hàng ngày dịch vụ</h3>
+            
+          </div>
+
+          
+          <div className="full-width-container">
+              <div className="chart-container">
+                <h3>Doanh thu hàng ngày dịch vụ</h3>
+                <Chart
+                  className="chart"
+                  chartType="Bar"
+                  data={serviceDailyRevenueData}
+                  options={barOptions}
+                  width="100%"
+                  height="400px"
+                />
+              </div>
+            </div>
+          <div className="row1">
+          <div className="col-md-6">
+          <div className="">
+            <h3>Tổng doanh thu sản phẩm</h3>
             <Chart
-              chartType="Bar"
-              data={serviceDailyRevenueData}
-              options={barOptions}
+              chartType="PieChart"
+              data={productPieData}
+              options={pieOptions}
               width="100%"
               height="400px"
             />
           </div>
-</div>
-
           </div>
-         
+
+          
+          <div className="col-md-6">
+            <h3>Tổng doanh thu dịch vụ</h3>
+            <Chart
+              chartType="PieChart"
+              data={servicePieData}
+              options={pieOptions}
+              width="100%"
+              height="400px"
+            />
+          </div>
         </div>
+       
       </main>
     </div>
   );

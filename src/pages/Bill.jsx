@@ -18,10 +18,10 @@ const Bill = () => {
           id: bill.id,
           customer_name: bill.customer_name,
           email: bill.email,
-          phone: bill.phone || 'N/A', // Fallback if phone is null
-          address: bill.address || 'N/A', // Fallback if address is null
-          total: bill.detail.reduce((acc, detail) => acc + (detail.price - (detail.price * detail.discount) / 100), 0), // Calculate total price after discount
-          status: bill.status === 1 ? 'Paid' : 'Unpaid', // Convert status to text
+          phone: bill.phone || 'Không có SĐT' , 
+          address: bill.address || 'Không có địa chỉ', 
+          total: bill.detail.reduce((acc, detail) => acc + (detail.price - (detail.price * detail.discount) / 100), 0), 
+          status: bill.status === 1 ? 'Paid' : 'Unpaid', 
         }));
         setRows(billsData);
       } catch (error) {
